@@ -1,0 +1,117 @@
+<!DOCTYPE html5>
+<html>
+<head>
+<a href="https://web.njit.edu/~er86/assignment4/table.php">Current Names in Chat Databse</a>
+<title>IT 202 Chat App | Ebram Kerolos</title>
+<script type="text/javascript">
+
+	function createRequestObject()
+	{
+		var ro;
+		var browser = navigator.appName;
+		
+		if(browser == "MicrosoftInternetExplorer")
+		{
+			ro = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else
+		{	
+			ro = new XMLHttpRequest();
+		}
+		
+		return ro;
+	}
+	
+	var http = createRequestObject();
+	
+	function sndReq()
+	{
+		u = document.getElementById("N100").value;
+		v = document.getElementById("user").value;
+		p = document.getElementById("pass").value;
+		
+		http.open('get', 'send.php?user=' +v+ "&pass=" +p+ "&N100=" +u+"&junk="+Math.random() );
+		
+		http.onreadystatechange = handleResponse;
+		http.send(null);
+	}
+	
+     function handleResponse()
+	{
+		if(http.readyState == 4) // Results downloaded to browser
+		{
+			var response = http.responseText;
+			document.getElementById("N100").value = response;
+		}
+	}
+	
+	function pullReq()
+	{
+		w = document.getElementById("user2").value;
+		
+		http.open('get', 'get.php?user2=' +w+ "&junk="+Math.random() );
+		
+		http.onreadystatechange = handleResponse2;
+		http.send(null);
+	}
+	
+	function handleResponse2()
+	{
+		if(http.readyState == 4) // Results downloaded to browser
+		{
+			var response2 = http.responseText;
+			document.getElementById("N300").value = response2;
+		}
+	}
+	
+		
+</script>
+
+<style type="text/css" >
+	html { background-color: #ccff99 ;}
+	N200 { background-color: yellow ; }
+	textarea { border: 1px solid black; margin: 2px; width: 464px ; height: 92px; float: left; background-color: #59b300 ;}
+	.button { float: right; width: 8px; }
+	.N200 { width: 50px; height: 50px; float: left;}
+	p { float: left ; border: 2px solid ;}
+	.lisbox { float: left ; border: 2px solid black ; width: 350px; height: 100px; background-color: #00BFFF ; }
+</style>
+
+</head>
+<h1> Welcome to the NJIT Messaging System </h1>
+<h4> Please input your username and password to start chatting with others </h4>
+<body>
+
+<p> 
+<label for="user" >
+Username:
+</label>
+	<input type=text name="user" id="user" value="" class="user" required autofocus >
+	<br>
+<label for="pass" >
+Password:
+</label>
+	<input type=password name="pass" id="pass" value="" class="pass" required >
+	<input type=button value="Send Chat" id="button" onclick="sndReq()"  >
+	<br><br>
+
+<label for="N100" >
+<b>Enter Chat:</b>
+</label>
+		<br>
+		<textarea name="textarea" placeholder="" id="N100" rows=2 cols=20 ></textarea>
+		</p><br><br><br><br><br><br>
+
+</body>
+<br><br><br><br><br>
+
+<div id="N200" ></div>
+<br><br><br>
+
+<label for="user2" >
+Listen to:
+</label>
+	<input type=text name="user2" id="user2" title="Enter Name of a User to Listen to Their Chat" class="user" >
+	<input type=button onclick="pullReq()" value="Listen" id="button2" > <br><br>
+<textarea name="textarea" placeholder="" id="N300" rows=2 cols=20 ></textarea><br>
+</html>
